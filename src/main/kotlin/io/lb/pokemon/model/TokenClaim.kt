@@ -1,8 +1,7 @@
-package io.lb.warehouse.security.data.model
+package io.lb.pokemon.model
 
 import com.auth0.jwt.JWT
 import com.auth0.jwt.algorithms.Algorithm
-import io.lb.pokemon.model.TokenConfig
 import java.sql.Date
 
 data class TokenClaim(

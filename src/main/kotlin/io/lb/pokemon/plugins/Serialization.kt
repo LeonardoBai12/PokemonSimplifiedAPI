@@ -1,4 +1,4 @@
-package io.lb.warehouse.core.plugins
+package io.lb.pokemon.plugins
 
 import io.ktor.serialization.gson.gson
 import io.ktor.serialization.kotlinx.json.json

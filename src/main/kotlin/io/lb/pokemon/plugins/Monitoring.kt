@@ -1,4 +1,4 @@
-package io.lb.warehouse.core.plugins
+package io.lb.pokemon.plugins
 
 import io.ktor.server.application.Application
 import io.ktor.server.application.install

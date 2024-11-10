@@ -1,4 +1,4 @@
-package io.lb.warehouse.core.plugins
+package io.lb.pokemon.plugins
 
 import com.auth0.jwt.JWT
 import com.auth0.jwt.algorithms.Algorithm
