@@ -6,14 +6,14 @@ val coroutinesVersion: String by project
 val h2Version: String by project
 
 plugins {
-    kotlin("jvm") version "1.9.10"
-    id("io.ktor.plugin") version "2.3.4"
+    kotlin("jvm") version "2.0.0"
+    id("io.ktor.plugin") version "3.0.3"
     id("org.jetbrains.kotlin.plugin.serialization") version "1.9.10"
     id("com.gradleup.shadow") version "8.3.1"
 }
 
 group = "io.lb"
-version = "1.1.0-SNAPSHOT"
+version = "1.1.1-SNAPSHOT"
 
 kotlin {
     compilerOptions {

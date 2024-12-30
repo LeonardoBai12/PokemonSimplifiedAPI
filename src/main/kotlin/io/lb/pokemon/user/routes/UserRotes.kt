@@ -6,8 +6,10 @@ import io.ktor.server.application.Application
 import io.ktor.server.application.ApplicationCall
 import io.ktor.server.application.call
 import io.ktor.server.auth.authenticate
+import io.ktor.server.auth.authentication
 import io.ktor.server.request.receiveNullable
 import io.ktor.server.response.respond
+import io.ktor.server.routing.RoutingContext
 import io.ktor.server.routing.delete
 import io.ktor.server.routing.get
 import io.ktor.server.routing.post
@@ -61,7 +63,6 @@ import java.sql.SQLException
  * [/api/deleteUser](https://documenter.getpostman.com/view/28162587/2sA3JGeihC#44e9c25d-ef79-446b-8dca-be4934599061)
  */
 fun Application.userRoutes(
-    smsClient: SmsClient,
     smsDatabaseService: SmsDatabaseService,
     useCases: UserUseCases
 ) {
@@ -103,7 +104,7 @@ fun Application.userRoutes(
             }
 
             try {
-                val verificationCode = smsClient.sendSms(data.phone, "Your verification come for PokéMemory is")
+                val verificationCode = SmsClient.sendSms(data.phone, "Your verification come for PokéMemory is")
                 smsDatabaseService.insertValidation(data.phone, verificationCode)
                 call.respond(HttpStatusCode.OK)
             } catch (e: PokemonException) {
@@ -113,15 +114,15 @@ fun Application.userRoutes(
             }
         }
 
-        get("/api/loginBySms") {
+        post("/api/loginBySms") {
             call.sessions.get<PokemonException>()?.let {
                 call.respond(HttpStatusCode.Conflict, "There is already an user logged in.")
-                return@get
+                return@post
             }
 
             val data = call.receiveNullable<LoginByPhoneData>() ?: run {
                 call.respond(HttpStatusCode.BadRequest)
-                return@get
+                return@post
             }
 
             try {
@@ -129,7 +130,7 @@ fun Application.userRoutes(
 
                 if (result.not()) {
                     call.respond(HttpStatusCode.Forbidden, "Invalid verification code")
-                    return@get
+                    return@post
                 }
 
                 val user = useCases.loginByPhoneUseCase(data.phone)
@@ -147,15 +148,15 @@ fun Application.userRoutes(
             }
         }
 
-        get("/api/login") {
+        post("/api/login") {
             call.sessions.get<PokemonException>()?.let {
                 call.respond(HttpStatusCode.Conflict, "There is already an user logged in.")
-                return@get
+                return@post
             }
 
             val request = call.receiveNullable<LoginRequest>() ?: run {
                 call.respond(HttpStatusCode.BadRequest)
-                return@get
+                return@post
             }
 
             try {
@@ -175,7 +176,7 @@ fun Application.userRoutes(
             }
         }
 
-        authenticate {
+        authentication {
             get("/api/user") {
                 val userId = call.parameters["userId"] ?: run {
                     call.respond(HttpStatusCode.BadRequest)
@@ -268,7 +269,7 @@ fun Application.userRoutes(
     }
 }
 
-private suspend fun PipelineContext<*, ApplicationCall>.validateSession(userId: String): Boolean {
+private suspend fun RoutingContext.validateSession(userId: String): Boolean {
     val authenticatedUserId = call.sessions.get<PokemonSession>()?.clientId
 
     if (userId != authenticatedUserId) {

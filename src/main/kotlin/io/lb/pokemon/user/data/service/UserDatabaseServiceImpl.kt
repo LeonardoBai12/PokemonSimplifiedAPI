@@ -4,6 +4,7 @@ import com.mongodb.client.model.Filters
 import com.mongodb.client.model.Updates
 import io.lb.pokemon.core.DatabaseClient
 import io.lb.pokemon.core.database
+import io.lb.pokemon.core.embedded
 import io.lb.pokemon.user.data.model.UserData
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
@@ -13,7 +14,7 @@ import kotlinx.coroutines.flow.singleOrNull
  * Service class for interacting with the user data table in the PostgreSQL database.
  */
 class UserDatabaseServiceImpl : UserDatabaseService {
-    private val collection = DatabaseClient.client(false)
+    private val collection = DatabaseClient.client(embedded)
         .database().getCollection<UserData>("User")
 
     override suspend fun createUser(user: UserData): String = withContext(Dispatchers.IO) {

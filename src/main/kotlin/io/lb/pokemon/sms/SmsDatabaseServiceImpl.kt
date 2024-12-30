@@ -3,6 +3,7 @@ package io.lb.pokemon.sms
 import com.mongodb.client.model.Filters
 import io.lb.pokemon.core.DatabaseClient
 import io.lb.pokemon.core.database
+import io.lb.pokemon.core.embedded
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.singleOrNull
@@ -13,7 +14,7 @@ import kotlinx.coroutines.withContext
  * Service for interacting with the SMS validation database.
  */
 class SmsDatabaseServiceImpl : SmsDatabaseService {
-    private val collection = DatabaseClient.client(false)
+    private val collection = DatabaseClient.client(embedded)
         .database().getCollection<ValidationData>("SmsValidation")
 
     override suspend fun insertValidation(phone: String, verificationCode: Int) = withContext(Dispatchers.IO) {

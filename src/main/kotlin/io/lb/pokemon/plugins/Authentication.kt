@@ -6,10 +6,11 @@ import io.ktor.server.application.Application
 import io.ktor.server.auth.authentication
 import io.ktor.server.auth.jwt.JWTPrincipal
 import io.ktor.server.auth.jwt.jwt
+import io.lb.pokemon.core.embedded
 import io.lb.pokemon.model.TokenConfig
 
 fun Application.configureAuth() {
-    val config = TokenConfig.buildTokenConfig()
+    val config = TokenConfig.buildTokenConfig(embedded)
     authentication {
         jwt {
             realm = "PokeMemory"
