@@ -12,6 +12,21 @@ plugins {
     id("com.gradleup.shadow") version "8.3.1"
 }
 
+group = "io.lb"
+version = "1.1.0-SNAPSHOT"
+
+kotlin {
+    compilerOptions {
+        freeCompilerArgs.addAll("-Xjsr305=strict")
+    }
+}
+
+java {
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(17)
+    }
+}
+
 application {
     mainClass.set("io.lb.pokemon.core.ApplicationKt")
 
@@ -24,6 +39,11 @@ repositories {
 }
 
 dependencies {
+    implementation(platform("aws.sdk.kotlin:bom:1.3.100"))
+    implementation(platform("org.apache.logging.log4j:log4j-bom:2.17.1"))
+
+    implementation("aws.sdk.kotlin:sns")
+
     implementation("org.mongodb:mongodb-driver-kotlin-coroutine:4.10.1")
     implementation("io.ktor:ktor-server-core-jvm")
     implementation("io.ktor:ktor-server-netty-jvm")
