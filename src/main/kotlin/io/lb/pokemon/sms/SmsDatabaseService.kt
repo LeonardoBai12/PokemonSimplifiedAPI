@@ -19,5 +19,5 @@ interface SmsDatabaseService {
      * @param verificationCode The verification code to validate.
      * @return True if validation succeeds, false otherwise.
      */
-    suspend fun validateCode(phone: String, verificationCode: String): Boolean
+    suspend fun validateCode(phone: String, verificationCode: Int): Boolean
 }

@@ -4,6 +4,7 @@ import com.mongodb.client.model.Filters
 import io.lb.pokemon.core.DatabaseClient
 import io.lb.pokemon.core.database
 import io.lb.pokemon.core.embedded
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.singleOrNull
@@ -20,14 +21,15 @@ class SmsDatabaseServiceImpl : SmsDatabaseService {
     override suspend fun insertValidation(phone: String, verificationCode: Int) = withContext(Dispatchers.IO) {
         val validationData = ValidationData(phone = phone, verificationCode = verificationCode)
         collection.insertOne(validationData)
-        launch {
+
+        CoroutineScope(Dispatchers.IO).launch {
             delay(120_000)
             collection.deleteOne(Filters.eq(ValidationData::phone.name, phone))
         }
         Unit
     }
 
-    override suspend fun validateCode(phone: String, verificationCode: String): Boolean = withContext(Dispatchers.IO) {
+    override suspend fun validateCode(phone: String, verificationCode: Int): Boolean = withContext(Dispatchers.IO) {
         val queryParams = Filters.and(
             Filters.eq(ValidationData::phone.name, phone),
             Filters.eq(ValidationData::verificationCode.name, verificationCode)

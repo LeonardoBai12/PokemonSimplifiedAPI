@@ -8,6 +8,7 @@ import io.ktor.server.application.call
 import io.ktor.server.auth.authenticate
 import io.ktor.server.auth.authentication
 import io.ktor.server.request.receiveNullable
+import io.ktor.server.request.receiveText
 import io.ktor.server.response.respond
 import io.ktor.server.routing.RoutingContext
 import io.ktor.server.routing.delete
@@ -73,7 +74,7 @@ fun Application.userRoutes(
                 return@post
             }
 
-            call.sessions.get<PokemonException>()?.let {
+            call.sessions.get<PokemonSession>()?.let {
                 call.respond(HttpStatusCode.Conflict, "There is already an user logged in.")
                 return@post
             }
@@ -89,7 +90,7 @@ fun Application.userRoutes(
         }
 
         post("api/requestSmsLogin") {
-            call.sessions.get<PokemonException>()?.let {
+            call.sessions.get<PokemonSession>()?.let {
                 call.respond(HttpStatusCode.Conflict, "There is already an user logged in.")
                 return@post
             }
@@ -115,7 +116,7 @@ fun Application.userRoutes(
         }
 
         post("/api/loginBySms") {
-            call.sessions.get<PokemonException>()?.let {
+            call.sessions.get<PokemonSession>()?.let {
                 call.respond(HttpStatusCode.Conflict, "There is already an user logged in.")
                 return@post
             }
@@ -149,7 +150,7 @@ fun Application.userRoutes(
         }
 
         post("/api/login") {
-            call.sessions.get<PokemonException>()?.let {
+            call.sessions.get<PokemonSession>()?.let {
                 call.respond(HttpStatusCode.Conflict, "There is already an user logged in.")
                 return@post
             }
@@ -253,6 +254,7 @@ fun Application.userRoutes(
 
                 try {
                     useCases.deleteUserUseCase(userId, request.password)
+                    call.sessions.clear<PokemonSession>()
                     call.respond(HttpStatusCode.OK)
                 } catch (e: SQLException) {
                     call.respond(HttpStatusCode.Forbidden, e.message.toString())

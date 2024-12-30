@@ -6,7 +6,7 @@ import kotlin.random.Random
 
 object SmsClient {
     suspend fun sendSms(userPhoneNumber: String, messageToSend: String): Int {
-        val expectedCode = Random(1000).nextInt(100000, 999999)
+        val expectedCode = (100_000..999_999).random()
         SnsClient {
             region = "sa-east-1"
         }.use { client ->
