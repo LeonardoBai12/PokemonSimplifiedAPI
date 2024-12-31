@@ -2,8 +2,8 @@ package io.lb.pokemon.security
 
 import com.auth0.jwt.JWT
 import com.auth0.jwt.algorithms.Algorithm
+import io.lb.pokemon.model.TokenConfig
 import io.lb.pokemon.security.data.model.TokenClaim
-import io.lb.pokemon.security.data.model.TokenConfig
 import java.sql.Date
 
 /**

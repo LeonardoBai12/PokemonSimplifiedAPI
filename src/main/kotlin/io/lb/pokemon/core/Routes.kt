@@ -7,7 +7,7 @@ import io.ktor.server.response.respond
 import io.ktor.server.routing.get
 import io.ktor.server.routing.routing
 import io.lb.pokemon.model.PokemonCard
-import io.lb.pokemon.security.data.model.TokenConfig
+import io.lb.pokemon.model.TokenConfig
 import io.lb.pokemon.sms.SmsDatabaseServiceImpl
 import io.lb.pokemon.user.data.repository.UserRepositoryImpl
 import io.lb.pokemon.user.data.service.UserDatabaseServiceImpl
@@ -25,7 +25,7 @@ import io.lb.pokemon.util.PokemonException
 import java.sql.SQLException
 import kotlinx.coroutines.flow.toList
 
-val embedded = true
+val embedded = false
 
 fun Application.routes() {
     val collection = DatabaseClient.client(embedded)
@@ -33,7 +33,7 @@ fun Application.routes() {
     val repository = UserRepositoryImpl(
         service = UserDatabaseServiceImpl()
     )
-    val tokenConfig = TokenConfig.tokenConfig(config = environment.config, embedded = true)
+    val tokenConfig = TokenConfig.buildTokenConfig(embedded = embedded)
 
     userRoutes(
         smsDatabaseService = SmsDatabaseServiceImpl(),

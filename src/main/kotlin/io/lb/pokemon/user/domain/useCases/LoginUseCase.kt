@@ -1,7 +1,7 @@
 package io.lb.pokemon.user.domain.useCases
 
+import io.lb.pokemon.model.TokenConfig
 import io.lb.pokemon.security.data.model.TokenClaim
-import io.lb.pokemon.security.data.model.TokenConfig
 import io.lb.pokemon.security.generateToken
 import io.lb.pokemon.user.data.model.LoginResponse
 import io.lb.pokemon.user.domain.repository.UserRepository

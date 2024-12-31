@@ -11,7 +11,7 @@ data class TokenConfig(
 ) {
     companion object {
         fun buildTokenConfig(
-            embedded: Boolean = false
+            embedded: Boolean
         ): TokenConfig {
             val secret = if (embedded) {
                 val properties = Properties()

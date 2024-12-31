@@ -2,7 +2,6 @@ package io.lb.pokemon.sms
 
 import aws.sdk.kotlin.services.sns.SnsClient
 import aws.sdk.kotlin.services.sns.model.PublishRequest
-import kotlin.random.Random
 
 object SmsClient {
     suspend fun sendSms(userPhoneNumber: String, messageToSend: String): Int {
